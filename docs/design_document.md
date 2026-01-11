@@ -57,9 +57,9 @@ graph TD
         end
         
         subgraph Physical Indices
-            Index1[Index_v1 (Deprecated)]
-            Index2[Index_v2 (Production)]
-            Index3[Index_v3 (Draft)]
+            Index1["Index_v1 (Deprecated)"]
+            Index2["Index_v2 (Production)"]
+            Index3["Index_v3 (Draft)"]
         end
     end
 

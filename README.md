@@ -18,9 +18,9 @@ This project solves these problems by treating **Weaviate as the system of recor
 
 ```mermaid
 graph LR
-    User[User App] --> |Get Retriever| Manager[Lifecycle Manager]
-    Manager --> |Query State| Weaviate[Weaviate]
-    Weaviate --> |Resolve Production| Index[Active Index]
+    User["User App"] --> |Get Retriever| Manager["Lifecycle Manager"]
+    Manager --> |Query State| Weaviate["Weaviate"]
+    Weaviate --> |Resolve Production| Index["Active Index"]
     User --> |Search| Index
 ```
 
