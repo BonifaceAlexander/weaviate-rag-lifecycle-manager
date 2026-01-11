@@ -34,6 +34,50 @@ An `IndexGeneration` flows through a strict state machine:
 *   `DEPRECATED`: A former production index that is kept for instant rollback/fallback.
 *   `ARCHIVED`: Cold storage or deleted.
 
+### 3.3 Architecture Diagram
+
+```mermaid
+graph TD
+    subgraph Client Application
+        App[Application Logic]
+        LC[LangChain Retriever]
+    end
+
+    subgraph Lifecycle Manager
+        Manager[WeaviateRAGLifecycleManager]
+        Resolver[Production Index Resolver]
+    end
+
+    subgraph Weaviate [Weaviate System of Record]
+        direction TB
+        subgraph Metadata Schema
+            DS[RAGDataset]
+            EC[EmbeddingConfig]
+            IG[IndexGeneration State]
+        end
+        
+        subgraph Physical Indices
+            Index1[Index_v1 (Deprecated)]
+            Index2[Index_v2 (Production)]
+            Index3[Index_v3 (Draft)]
+        end
+    end
+
+    %% Queries
+    App -- 1. Request Retriever --> LC
+    LC -- 2. Get Prod Index --> Manager
+    Manager -- 3. Query State --> IG
+    IG -.-> |Points to| Index2
+    Manager -- 4. Return Config --> LC
+    LC -- 5. Search (Vectors) --> Index2
+    
+    %% Management
+    App -- Manage Lifecycle --> Manager
+    Manager -- Create --> DS
+    Manager -- Register --> EC
+    Manager -- Spawn --> Index3
+```
+
 ## 4. Detailed Design
 
 ### 4.1 Schema Definition

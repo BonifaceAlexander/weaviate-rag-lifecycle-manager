@@ -14,6 +14,16 @@ As RAG systems move to production, teams face critical lifecycle challenges:
 
 This project solves these problems by treating **Weaviate as the system of record** for lifecycle state, compatible with LangChain and other frameworks.
 
+## 🏗️ Architecture
+
+```mermaid
+graph LR
+    User[User App] --> |Get Retriever| Manager[Lifecycle Manager]
+    Manager --> |Query State| Weaviate[Weaviate]
+    Weaviate --> |Resolve Production| Index[Active Index]
+    User --> |Search| Index
+```
+
 ## ✨ Key Features
 
 *   **Explicit Lifecycle States**: Manage indices through `DRAFT` → `STAGING` → `PRODUCTION` → `DEPRECATED`.
